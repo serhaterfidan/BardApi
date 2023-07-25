@@ -10,13 +10,8 @@ app = Flask(__name__)
 @app.route('/get_answer', methods=['POST'])
 def get_answer():
     try:
-        # Retrieve the API token from the request header
-        API_TOKEN = request.headers.get('Authorization')
-        if not API_TOKEN:
-            return jsonify({'error': 'No API token provided in the request header.'}), 401
-
-        # Initialize Bard API with the token from the header
-        bard = Bard(token=API_TOKEN)
+        
+        bard = Bard(token_from_browser=True)
 
         # Extract the input text from the incoming JSON request
         data = request.get_json()
