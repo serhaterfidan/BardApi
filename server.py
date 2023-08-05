@@ -12,7 +12,9 @@ def get_answer():
     try:
         # Extract the input text and authentication token from the incoming JSON request
         data = request.get_json()
-        auth_token = data.get('Secure_1PSID', '')
+        
+        # Extract the input text and authentication token from the query parameters
+        auth_token = request.args.get('Secure_1PSID', '')
 
         # Authenticate the user based on the provided token
         if not auth_token:
