@@ -10,11 +10,16 @@ app = Flask(__name__)
 @app.route('/get_answer', methods=['POST'])
 def get_answer():
     try:
-        
-        bard = Bard(token_from_browser=True)
-
-        # Extract the input text from the incoming JSON request
+        # Extract the input text and authentication token from the incoming JSON request
         data = request.get_json()
+        auth_token = data.get('Secure_1PSID', '')
+
+        # Authenticate the user based on the provided token
+        if not auth_token:
+            return jsonify({'error': 'Unauthorized. Invalid or missing Secure_1PSID.'}), 401
+
+        bard = Bard(token=auth_token, timeout=30)
+
         input_text = data.get('input_text', '')
 
         # Send the input text to the Bard API and get a response
